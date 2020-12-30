@@ -1,0 +1,20 @@
+
+== Introduction
+
+MoonTypes is a library that provides means to define **C-like structured types** in Lua,
+to instantiate them, and set/get fields from type instances.
+
+It has been designed for the definition of message formats - specifically, for signals
+exchanged by https://github.com/stetre/moonagents[MoonAgents'] agents -
+but it is a standalone library and can be as well used as a general purpose type system.
+
+Types in MoonTypes are defined in one or more <<groups, groups>>. This allows, for
+example, to define different message interfaces and keep their type definitions separate.
+
+The definition of types is done according to a <<syntax, syntax>> that is very similar to
+that for type declaration in the C programming language, and that supports structs, arrays,
+and unions.
+
+Once a group is populated with type definitions, <<instances, instances>> of its type can
+be created and their fields can be accessed using a convenient <<fieldname, dot notation>>.
+

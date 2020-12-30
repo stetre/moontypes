@@ -1,0 +1,34 @@
+
+[[instances]]
+== Instances
+
+In MoonTypes, an *instance* of a type is a Lua http://www.lua.org/manual/5.3/manual.html#3.4.7[sequence]
+whose first array-element is a string denoting the type (the type name), and the elements that follow are
+the values of the terminal fields.
+
+Essentially, an instance is a flattened-out concrete representation of an object of the given type,
+and the type definition allows to interpret it and access its fields (at any level) by name, using the get/set methods described in the next session.
+
+[[npvalue]]
+A special *NP value* ('not present'), is used for terminal fields that
+are absent. The NP value can be configured on a group basis, and by default is _'?'_ (a question mark character).
+
+Instances can be created with the following methods:
+
+[[new]]
+* _instance_ = _group_++:++*new*(_typename_) +
+[small]#Creates a new _instance_ of the type named _typename_. +
+All the terminal fields are initialized to the <<npvalue, NP value>> (meaning 'not present').#
+
+[[clone]]
+* _instance~1~_ = _instance_++:++*clone* ( ) +
+[small]#Creates a new instance by cloning the already existing _instance_, including its values.#
+
+.Example: instantiating a type
+[source, lua]
+----
+local x = group:new('mytype') -- create an instance of mytype
+--> x = { 'mytype', '?', '?', '?', '?', '?', '?', '?' }
+----
+
+

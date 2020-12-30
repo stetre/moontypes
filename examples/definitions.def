@@ -1,0 +1,14 @@
+-- Definitions file:
+
+typedef struct {
+  int a
+  int b
+  int c
+} element
+
+typedef struct {
+  element e1
+  element e2
+  element e3
+} mytype
+

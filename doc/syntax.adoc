@@ -1,0 +1,51 @@
+
+[[syntax]]
+== Type definition syntax
+
+MoonTypes allows for the definition of structured types starting from primitive types,
+using a C-like _typedef_ construct (see the PEG declaration syntax below).
+The syntax supports the *struct* and *union* constructs, *arrays*, and nesting.
+
+Each type has a *size*, defined as the number of terminal fields it contains. The size
+determines the length of any <<instance, instance>> of that type.
+
+*Primitive types* (listed in the next subsection) are the types of terminal fields.
+They all have size 1, with the notable exception of the *void* type
+footnote:[The *void* type is convenient for messages, or signals, carrying no
+other information content beside their arrival.]
+that has size 0.
+
+*Derived types* are the structured types obtained by combining already defined types with
+the _typedef_ construct. The size of a derived type
+follows from its definition, and may be 0, 1, or greater.
+
+Types are added to a group by supplying their definitions to the
+_group_:<<typedef,typedef>>(&nbsp;) method in a string (or a text file), and
+using the syntax described by the following PEG:
+
+----
+typedecl       <-  'typedef' sp+ basetype sp+ Name array* sep?
+basetype       <-  'void' / structorunion / Type
+array          <-  sp* '[' sp* Size sp* ']' 
+structorunion  <-  ('struct' / 'union') sp* fieldlist
+fieldlist      <-  '{' sp* field (sep field)* sep? '}'
+field          <-  basetype sp+ FieldName array?
+sp             <-  ' ' / '\t' / '\n'
+sep            <-  (sp* (',' / ';') sp*) / sp+
+----
+
+Here `Size` is a positive integer, while `Name`, `FieldName` and `Type` are identifiers
+composed only of letters, digits and underscores, and not starting with a digit
+(`Type` must be the name of an already defined type, primitive or derived as well).
+
+The syntax essentially boils down to the syntax for type declarations in C, with few differences.
+
+Unlike in C, typedefs and fields in structs/unions can be separated by just whitespaces
+(sequences of spaces, tabs and newlines). The separators `,` and `;` may be optionally
+used, but they are not required.
+
+Also, this is not shown in the PEG but the syntax tolerates end-of-line Lua comments (`-- ...`),
+C comments (`/* ... */`), C++ comments (`// ...`), and lines starting with a `#` 
+(like for example C preprocessor directives).
+These are all ignored by MoonTypes when parsing the type definition string or file.
+

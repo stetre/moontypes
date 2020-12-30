@@ -1,0 +1,38 @@
+
+[[groups]]
+== Groups
+
+A *group* is a database of type definitions, created with the following function:
+
+[[group]]
+* _group_ = *group*([ _np_ ]) +
+[small]#Creates a new _group_, having only the pre-defined <<_primitive_types, primitive types>> in it. +
+The optional parameter _np_ (a string), if supplied, overrides the default <<npvalue, NP value>>
+('not present'), which is the question mark character ('?').#
+
+Once created, a group can be populated using the following methods:
+
+[[typedef]]
+* _group_++:++*typedef*(_definitions_) +
+_group_++:++*typedef_from_file*(_filename_) +
+[small]#Add to _group_ the types defined in the string _definitions_ or in the file named _filename_,
+according to the <<syntax, type definition syntax>>.#
+
+.Example: defining types
+[source, lua]
+----
+group:typedef([[
+-- some aliases of primitive types:
+typedef boolean myboolean
+typedef string mystring
+typedef void myvoid
+
+-- a derived structured type:
+typedef struct {
+   boolean b      
+   string  s
+   number  arr[5]
+} mytype
+]])
+----
+

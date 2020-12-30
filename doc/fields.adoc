@@ -1,0 +1,74 @@
+
+== Accessing fields
+
+[[fieldname]]
+The fields of an instance are referred to with a *dot notation* which is similar to the one used in C, but with a couple of differences: elements of arrays are named with their index, starting from 1 (e.g.,_'arr.1'_, _'arr.2'_, ...), and the special name _'*'_ can be used to denote the whole instance (that is, the outermost-level field). 
+
+In the methods that follow, the _fieldname_ argument must always be given as a string using this notation.
+
+[[set]]
+* _instance_++:++*set*(<<fieldname, _fieldname_>>, [_value~1~_, _value~2~_, _..._]) +
+[small]#Writes the given values to the field named _fieldname_. +
+Assuming _fieldsz_ is the size of the field, and _nargs_ is the number of supplied arguments, then: +
+pass:[-] if _nargs_ < _fieldsz_, only the first _nargs_ terminal fields are written (in the given order), while the remaining ones are left untouched; +
+pass:[-] if _nargs_ >= _fieldsz_, the entire field is written with the first _fieldsz_ arguments,
+and any extra value is ignored; +
+pass:[-] if _nargs_ = 0 (no values are supplied), all the terminal fields of _fieldname_ are
+reset to the <<npvalue, NP value>> ('not present').#
+
+[[get]]
+*  _value~1~_, _value~2~_, _..._ = _instance_++:++*get*(<<fieldname, _fieldname_>>) +
+[small]#Returns the terminal values of the field named _fieldname_.#
+
+.Example: reading and writing the fields of an instance
+[source, lua]
+----
+local x = group:new('mytype') -- create an instance of mytype
+--> x = { 'mytype', '?', '?', '?', '?', '?', '?', '?' }
+
+-- set some values:
+x:set('b', true)          -- set the x.b field
+x:set('s', 'this is s')   -- set the x.s field
+x:set('arr', 12, 25, 41)  -- set (part of) the x.arr field
+--> x = { 'mytype', true, 'this is s', 12, 25, 41, '?', '?' }
+
+-- get some values:
+print(x:get('*'))        --> true 'this is s'  12  25  41  ?  ?  (the whole type)
+print(x:get('b'))        --> true
+print(x:get('s'))        --> 'this is s'
+print(x:get('arr'))      --> 12  25  41  ?  ?  (the whole array)
+print(x:get('arr.2')  --> 25  (only the 2nd element)
+
+-- copy a whole array from an instance to another:
+local y = group:new('mytype')
+y:set('arr', x:get('arr'))  
+--> y = { 'mytype', '?', '?', 12, 25, 41, '?', '?' }
+----
+
+[[safeaccess]]
+The above set/get methods do not perform any check on the validity of the values that are written
+to or read from the fields. A somewhat safer access can be achieved by using the following methods, that
+however can be used only to access terminal fields (that is, fields of <<primitivetypes, primitive types>>). When these methods are used, the value first tested for consistency with its type, and a
+Lua http://www.lua.org/manual/5.3/manual.html#pdf-error[error](&nbsp;) is raised if the test fails.
+
+[[tset]]
+* _instance_++:++*tset*(<<fieldname, _fieldname_>>, [_value_]) +
+[small]#Safely writes _value_ to the terminal field named _fieldname_.. + 
+The supplied _value_ must be a valid value for the terminal field's type,  
+or the <<npvalue, NP value>> ('not present'). +
+If _value_ is not supplied, the field is reset to the NP value.#
+
+[[tget]]
+* _value_ = _instance_++:++*tget*(<<fieldname, _fieldname_>>) +
+[small]#Safely reads the terminal field named _fieldname_.#
+
+Finally, the two methods that follow are provided to conveniently access instances of
+primitive types, that is, instances that have a single terminal field.
+These methods are equivalent to the tset/tget methods, but the fieldname is here implicit.
+
+[[pset]]
+* _instance_++:++*pset*([_value_]) +
+_value_ = _instance_++:++*pget*( ) +
+[small]#Same as <<tset, tset>>(&nbsp;) and  <<tget, tget>>(&nbsp;) called with _fieldname_=_'*'_. +
+The _instance_ must have a single field, and that field must be of a primitive type (or an alias).#
+

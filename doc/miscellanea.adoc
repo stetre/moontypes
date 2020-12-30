@@ -1,0 +1,27 @@
+== Miscellanea
+
+This section describes some additional methods for _group_ and _instance_ objects.
+
+[[np]]
+* _np_ = _group_++:++*np*() +
+[small]#Returns the <<npvalue, NP value>> ('not present') for the _group_.#
+
+
+[[sizeof]]
+* _size_, _first_, _last_, _descr_ = _group_++:++*sizeof* (_typename_, [_fieldname_]) +
+_size_, _first_, _last_, _descr_ = _instance_++:++*sizeof* ([_fieldname_]) +
+[small]#Returns the properties of the field _fieldname_ in the type _typename_, or in the
+_instance_'s type: +
+pass:[-] _size_: the number of terminals the field is composed of, +
+pass:[-] _first_, _last_: the indices of the first and last terminals in the instance table, +
+pass:[-] _descr_: a string describing the structure of the field. +
+If _fieldname_ is not supplied, it defaults to _'*'_, meaning the outermost field.#
+
+[[tostring]]
+* _string_ = _instance_++:++*tostring*([_fieldname_], [_sep_]) +
+_instance_++:++*print*([_fieldname_], [_sep_]) +
+[small]#Returns/prints a string with the full name of the field _fieldname_, followed by its terminal values. +
+If _fieldname_ is not supplied, it defaults to _'*'_, meaning the outermost field. +
+The optional _sep_ parameter is the separator to be used when concatenating the terminal fields, and defaults to a single space.#
+
+

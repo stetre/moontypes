@@ -1,0 +1,24 @@
+= MoonTypes Reference Manual
+Stefano Trettel
+v0.1, 2020-12-29
+:toc: left
+:toclevels: 3
+:stylesdir: ./
+:stylesheet: colony.css
+:source-highlighter: pygments
+:pygments-style: autumn
+:source-language: lua
+:examplesdir: ../examples
+
+image::powered-by-lua.gif[Lua logo, link=http://www.lua.org]
+
+include::preface.adoc[]
+include::introduction.adoc[]
+include::groups.adoc[]
+include::instances.adoc[]
+include::fields.adoc[]
+include::syntax.adoc[]
+include::primitives.adoc[]
+include::miscellanea.adoc[]
+
+
